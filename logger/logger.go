@@ -13,20 +13,21 @@ type Logger struct {
 }
 
 func (logger Logger) Version() string {
-	return "0.01"
+	return "0.03"
 }
 
 func New() Logger {
 	path := viper.GetString("logger.file")
 	if len(path) == 0 {
-		path = "./app.log"
+		path = "./logs/app.log"
 	}
 	w := zapcore.AddSync(&lumberjack.Logger{
-		Filename:   "./app.log",
-		MaxSize:    1, // megabytes
-		MaxBackups: 3,
-		MaxAge:     28, // days
+		Filename:   path,
+		MaxSize:    10, // megabytes
+		MaxBackups: 365,
+		MaxAge:     365, // days
 		LocalTime:  true,
+		Compress:   true,
 	})
 	core := zapcore.NewCore(
 		getEncoder(),

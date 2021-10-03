@@ -9,5 +9,4 @@ go get github.com/ubgo/gofm/logger
 ```
 logger:
   file: /var/log/app.log
-
 ```
