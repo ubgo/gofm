@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -16,6 +17,10 @@ func (logger Logger) Version() string {
 }
 
 func New() Logger {
+	path := viper.GetString("logger.file")
+	if len(path) == 0 {
+		path = "./app.log"
+	}
 	w := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   "./app.log",
 		MaxSize:    1, // megabytes
