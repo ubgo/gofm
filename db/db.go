@@ -18,8 +18,9 @@ func New() DB {
 	databaseName := viper.GetString("database.name")
 	databaseHost := viper.GetString("database.host")
 	databasePort := viper.GetString("database.port")
+	sslmode := viper.GetString("database.sslmode")
 
-	dbDSN := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s port=%s", databaseHost, username, databaseName, password, databasePort)
+	dbDSN := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=%s password=%s port=%s", databaseHost, username, databaseName, sslmode, password, databasePort)
 
 	db, err := sql.Open("postgres", dbDSN)
 	if err != nil {
