@@ -42,7 +42,7 @@ func (server Server) Start() {
 func pingHandler(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "pong",
-		"app":     viper.GetString("appName"),
+		"app":     viper.GetString("app_name"),
 	})
 }
 
