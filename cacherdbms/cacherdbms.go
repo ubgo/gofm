@@ -94,7 +94,14 @@ func (a *Rdbms) Get(key string) interface{} {
 		return nil
 	}
 
-	return entity.Value
+	var v string
+	err := json.Unmarshal([]byte(entity.Value), &v)
+	if err != nil {
+		return entity.Value
+	}
+	// val, _ := strconv.Unquote(entity.Value)
+
+	return v
 }
 
 func (a *Rdbms) Del(key string) {
