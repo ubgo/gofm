@@ -20,8 +20,9 @@ type Gql struct {
 }
 
 type Config struct {
-	Server    ginserver.Server
-	GqlServer *handler.Server
+	Server     ginserver.Server
+	GqlServer  *handler.Server
+	Middleware []gin.HandlerFunc
 	// Resolver *resolverfn.Resolver
 }
 
@@ -109,6 +110,9 @@ func playgroundAccessMiddleware() gin.HandlerFunc {
 }
 
 func New(config Config) Gql {
+	if len(config.Middleware) > 0 {
+		config.Server.Router.Use(config.Middleware[0:]...)
+	}
 	config.Server.Router.POST("/query", graphqlHandler(config.GqlServer))
 	config.Server.Router.GET("/gql", playgroundAccessMiddleware(), playgroundHandler())
 	gqlgin := Gql{
