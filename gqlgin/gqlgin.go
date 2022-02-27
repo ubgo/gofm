@@ -60,20 +60,22 @@ func IsPlaygroundAllwedForContext(ctx context.Context) bool {
 		return false
 	}
 
+	key := gc.Query("key")
+
 	referer := gc.Request.Header.Get("Referer")
-	if len(referer) == 0 {
-		return false
+	if len(referer) != 0 && len(key) == 0 {
+		u, err := url.Parse(referer)
+		if err != nil {
+			panic(err)
+		}
+
+		q := u.Query()
+		key = q.Get("key")
 	}
 
-	u, err := url.Parse(referer)
-	if err != nil {
-		panic(err)
-	}
-
-	q := u.Query()
-	key := q.Get("key")
+	fmt.Println("Key", key)
 	if len(key) == 0 {
-		return false
+		key = gc.Query("key")
 	}
 
 	if key == viper.GetString("gql_playground_key") {
