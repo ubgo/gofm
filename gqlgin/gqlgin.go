@@ -112,11 +112,12 @@ func playgroundAccessMiddleware() gin.HandlerFunc {
 }
 
 func New(config Config) Gql {
+	rg := config.Server.Router.Group("/")
 	if len(config.Middleware) > 0 {
-		config.Server.Router.Use(config.Middleware[0:]...)
+		rg.Use(config.Middleware[0:]...)
 	}
-	config.Server.Router.POST("/query", graphqlHandler(config.GqlServer))
-	config.Server.Router.GET("/gql", playgroundAccessMiddleware(), playgroundHandler())
+	rg.POST("/query", graphqlHandler(config.GqlServer))
+	rg.GET("/gql", playgroundAccessMiddleware(), playgroundHandler())
 	gqlgin := Gql{
 		Config: config,
 	}
