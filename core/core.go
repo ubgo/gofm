@@ -6,6 +6,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/spf13/viper"
+	"github.com/ubgo/gofm/publicid"
+	"gorm.io/gorm"
 )
 
 type Core struct {
@@ -35,6 +37,19 @@ type Model struct {
 	ID        uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+type ModelNid struct {
+	ID        string    `json:"id" gorm:"type:varchar(36);primaryKey;"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+func (u *ModelNid) BeforeCreate(tx *gorm.DB) (err error) {
+	if len(u.ID) == 0 {
+		u.ID = publicid.Must()
+	}
+	return
 }
 
 type Plugin interface {
