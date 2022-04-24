@@ -1,4 +1,4 @@
-module github.com/ubgo/gofm
+module github.com/ubgo/gofm/publicid
 
 go 1.17
 
