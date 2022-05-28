@@ -15,4 +15,4 @@ for any new features or bug fixes.
 
 ## License
 
-goutil is [MIT licensed](LICENSE).
+This project is [MIT licensed](LICENSE).
