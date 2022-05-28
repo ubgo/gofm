@@ -32,7 +32,7 @@ func graphqlHandler(gserver *handler.Server) gin.HandlerFunc {
 	gserver.AroundOperations(func(ctx context.Context, next graphql.OperationHandler) graphql.ResponseHandler {
 
 		isAllowedPlayground := IsPlaygroundAllwedForContext(ctx)
-		fmt.Println("isAllowedPlayground", isAllowedPlayground)
+		// fmt.Println("isAllowedPlayground", isAllowedPlayground)
 		if !isAllowedPlayground {
 			graphql.GetOperationContext(ctx).DisableIntrospection = true
 		}
