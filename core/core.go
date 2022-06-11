@@ -52,6 +52,19 @@ func (u *ModelNid) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
+type ModelStr struct {
+	ID        string    `json:"id" gorm:"type:varchar(36);primaryKey;"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+func (u *ModelStr) BeforeCreate(tx *gorm.DB) (err error) {
+	if len(u.ID) == 0 {
+		u.ID = publicid.Must()
+	}
+	return
+}
+
 type Plugin interface {
 	Version() string
 	MigrateDb()

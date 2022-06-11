@@ -2,7 +2,6 @@ package gqlgin
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -73,7 +72,7 @@ func IsPlaygroundAllwedForContext(ctx context.Context) bool {
 		key = q.Get("key")
 	}
 
-	fmt.Println("Key", key)
+	// fmt.Println("Key", key)
 	if len(key) == 0 {
 		key = gc.Query("key")
 	}
