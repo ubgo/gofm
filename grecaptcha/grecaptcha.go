@@ -1,4 +1,4 @@
-package recaptcha
+package grecaptcha
 
 import (
 	"encoding/json"
@@ -57,11 +57,12 @@ func check(remoteip, response string) (r RecaptchaResponse, err error) {
 // and the client's response input to that challenge to determine whether or not
 // the client answered the reCaptcha input question correctly.
 // It returns a boolean value indicating whether or not the client answered correctly.
-// func Confirm(remoteip, response string) (result bool, err error) {
-// 	resp, err := check(remoteip, response)
-// 	result = resp.Success
-// 	return
-// }
+//
+//	func Confirm(remoteip, response string) (result bool, err error) {
+//		resp, err := check(remoteip, response)
+//		result = resp.Success
+//		return
+//	}
 func Confirm(remoteip, response string) (result RecaptchaResponse, err error) {
 	resp, err := check(remoteip, response)
 	result = resp
