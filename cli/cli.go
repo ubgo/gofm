@@ -22,7 +22,7 @@ func New() Cli {
 	rootCmd := &cobra.Command{
 		Use: "mango",
 		Long: `
-Jeoga FM is a Fast and Flexible Go Boilerplate built with love @ JEOGA Inc.
+Framework is a Fast and Flexible Go Boilerplate built with love @ JEOGA Inc.
 Complete documentation is available at http://mango.jeoga.com/`,
 	}
 
