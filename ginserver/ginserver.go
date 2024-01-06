@@ -6,15 +6,10 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 )
 
-type Config struct {
-	BeforeHandler gin.HandlerFunc
-}
-
 type Server struct {
-	Config
+	config
 	Router       *gin.Engine
 	RouterGroups map[string]*gin.RouterGroup
 }
@@ -33,35 +28,44 @@ func (server Server) GetRouterGroup(name string) (*gin.RouterGroup, error) {
 }
 
 func (server Server) Start() {
-	port := viper.GetString("server.port")
+	port := server.config.Port
 	url := "http://localhost:" + port
 	log.Println("Http Sever started at " + color.CyanString(url))
 	server.Router.Run(":" + port)
 }
 
-func pingHandler(c *gin.Context) {
+func (server Server) pingHandler(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "pong",
-		"app":     viper.GetString("app_name"),
+		"app":     server.config.AppName,
 	})
 }
 
-func New(config Config) Server {
-	if viper.GetString("env") == "prod" {
+func New(opts ...Option) Server {
+	cfg := config{
+		AppName: "app",
+		Port:    "7001",
+		IsProd:  true,
+	}
+
+	cfg.options(opts...)
+
+	if cfg.IsProd {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	router := gin.Default()
 
-	if config.BeforeHandler != nil {
-		router.Use(config.BeforeHandler)
+	if cfg.BeforeHandler != nil {
+		router.Use(cfg.BeforeHandler)
 	}
-	router.GET("/ping", pingHandler)
 
 	server := Server{
-		Config:       config,
+		config:       cfg,
 		Router:       router,
 		RouterGroups: make(map[string]*gin.RouterGroup),
 	}
+
+	router.GET("/ping", server.pingHandler)
 
 	return server
 }
