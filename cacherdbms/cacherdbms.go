@@ -62,6 +62,7 @@ func (a *Rdbms) Put(key string, val interface{}, ttl int) (bool, error) {
 	res := a.Config.GormDB.DB.First(&entity, &Cache{Key: key})
 	if res.Error != nil && errors.Is(res.Error, gorm.ErrRecordNotFound) {
 		entity := &Cache{
+			ID:      uuid.New(),
 			Key:     key,
 			Value:   string(p),
 			Expires: expire,
